@@ -39,8 +39,8 @@ public class ComicDetailActivity extends FragmentActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ComicDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ComicDetailFragment.ARG_ITEM_ID));
+            arguments.putString(ComicDetailFragment.COMIC_ID,
+                    getIntent().getStringExtra(ComicDetailFragment.COMIC_ID));
             ComicDetailFragment fragment = new ComicDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

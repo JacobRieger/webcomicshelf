@@ -67,7 +67,7 @@ public class ComicListActivity extends FragmentActivity
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ComicDetailFragment.ARG_ITEM_ID, id);
+            arguments.putString(ComicDetailFragment.COMIC_ID, id);
             ComicDetailFragment fragment = new ComicDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -79,7 +79,7 @@ public class ComicListActivity extends FragmentActivity
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, ComicDetailActivity.class);
-            detailIntent.putExtra(ComicDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(ComicDetailFragment.COMIC_ID, id);
             startActivity(detailIntent);
         }
     }
