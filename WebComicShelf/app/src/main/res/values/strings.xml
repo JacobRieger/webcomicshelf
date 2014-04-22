@@ -10,5 +10,9 @@
     <string name="title_comic_list">Comics</string>
     <string name="title_comic_detail">Comic Detail</string>
     <string name="title_activity_add_comic">AddComicActivity</string>
+    <string name="UpdateAll">Update</string>
+    <string name="AddComicButton">Add Comic</string>
+    <string name="Viewcomics">View Comics</string>
+    <string name="menu_settings">Settings</string>
 
 </resources>
