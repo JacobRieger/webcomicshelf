@@ -40,11 +40,19 @@ public class ComicDataService extends SQLiteOpenHelper {
     private static final String KEY_SEEN_BY_USER    = "seenByUser";
     private static final String KEY_LAST_UPDATED_AT = "lastUpdatedAt";
 
+    private SQLiteDatabase database;
 
-    public ComicDataService(Context context)
+    public ComicDataService(Context context, boolean readOnly)
     {
         super(context,DATABASE_NAME, null, DATABASE_VERSION);
+        database = readOnly ? this.getReadableDatabase() : this.getWritableDatabase();
     }
+
+    public void close()
+    {
+        database.close();
+    }
+
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -132,12 +140,13 @@ public class ComicDataService extends SQLiteOpenHelper {
         List<String> comicNames = new ArrayList<String>();
 
         cursor.moveToFirst();
-        while(!cursor.isAfterLast())
+        while(!cursor.moveToNext())
         {
             String name = cursor.getString(0);
             comicNames.add(name);
         }
-        database.close();
+
+        cursor.close();
 
         return comicNames;
     }
@@ -234,7 +243,6 @@ public class ComicDataService extends SQLiteOpenHelper {
                         KEY_SEEN_BY_USER,
                         KEY_LAST_UPDATED_AT }, columnName + "=?",
                 new String[] { value }, null, null, null, null);
-        database.close();
 
         return cursor;
     }
