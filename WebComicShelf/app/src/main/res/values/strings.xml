@@ -9,5 +9,6 @@
     <string name="title_activity_tester">TesterActivity</string>
     <string name="title_comic_list">Comics</string>
     <string name="title_comic_detail">Comic Detail</string>
+    <string name="title_activity_add_comic">AddComicActivity</string>
 
 </resources>

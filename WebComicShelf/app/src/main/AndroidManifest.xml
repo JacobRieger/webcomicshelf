@@ -26,6 +26,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="activities.ComicListActivity" />
         </activity>
+        <activity
+            android:name="activities.AddComicActivity"
+            android:label="@string/title_activity_add_comic" >
+        </activity>
     </application>
 
 </manifest>
