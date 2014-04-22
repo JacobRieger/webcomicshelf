@@ -3,11 +3,11 @@ package activities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v7.appcompat.R;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import services.database.ComicDataService;
@@ -73,12 +73,17 @@ public class ComicListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ComicDataService comicDataService = new ComicDataService(getActivity());
+        ComicDataService comicDataService = new ComicDataService(getActivity(), true);
 
         List<String> comicNames = comicDataService.getAllComicNames();
+//        List<String> comicNames = new ArrayList<String>();
+//        comicNames.add("Test Comic");
+//        comicNames.add("Another Test Comic");
 
         ArrayAdapter<String> stringAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, comicNames);
+
+        comicDataService.close();
 
         setListAdapter(stringAdapter);
     }

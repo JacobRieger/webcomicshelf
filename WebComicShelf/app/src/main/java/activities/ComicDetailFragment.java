@@ -42,11 +42,12 @@ public class ComicDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(COMIC_ID)) {
-            ComicDataService dataService = new ComicDataService(getActivity());
+            ComicDataService dataService = new ComicDataService(getActivity(), true);
 
             long comicId = Long.parseLong(getArguments().getString(COMIC_ID));
 
             selectedComic = dataService.getComic(comicId);
+            dataService.close();
         }
     }
 

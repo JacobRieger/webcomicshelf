@@ -11,6 +11,7 @@ public class ComicDatabaseSpecs {
 
     public void crudTests(Context context)
     {
-        ComicDataService service = new ComicDataService(context);
+        ComicDataService service = new ComicDataService(context, true);
+        service.close();
     }
 }
