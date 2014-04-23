@@ -20,7 +20,7 @@ public class AddComicActivity extends ActionBarActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new AddComicFragment())
                     .commit();
         }
     }
@@ -44,14 +44,15 @@ public class AddComicActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class AddComicFragment extends Fragment {
 
-        public PlaceholderFragment() {
+        public AddComicFragment() {
         }
 
         @Override
