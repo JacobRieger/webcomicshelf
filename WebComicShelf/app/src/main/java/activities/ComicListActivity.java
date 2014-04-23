@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.app.R;
 
@@ -37,7 +40,6 @@ public class ComicListActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_list);
-        Log.d("ComicListActivity", "On Create Called");
 
         if (findViewById(R.id.comic_detail_container) != null){
             // The detail container view will be present only in the
@@ -81,5 +83,34 @@ public class ComicListActivity extends FragmentActivity
             detailIntent.putExtra(ComicDetailFragment.COMIC_ID, id);
             startActivity(detailIntent);
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        menu.clear();
+
+        inflater.inflate(R.menu.comic_list, menu);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem)
+    {
+        switch(menuItem.getItemId())
+        {
+            case R.id.menuButtonAddComic:
+                Intent addComicIntent = new Intent(this, AddComicActivity.class);
+                startActivity(addComicIntent);
+                break;
+            case R.id.menuButtonUpdate:
+                break;
+            case R.id.menuButtonViewAllComics:
+                break;
+        }
+
+        return false;
     }
 }
