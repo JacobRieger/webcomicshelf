@@ -2,10 +2,12 @@ package activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,19 +20,23 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.app.R;
 
 import domain.Bookmark;
+import domain.Comic;
+import domain.HtmlImage;
+import services.database.ComicDataService;
+import services.network.async.ImageDownloadAsyncTask;
+import services.utilities.AddComicOnTouchListener;
 import services.utilities.BookmarkList;
 import services.utilities.BookmarkLoader;
+import services.utilities.ComicBuilder;
 
-public class AddComicActivity extends ActionBarActivity {
+public class AddComicActivity extends ActionBarActivity implements View.OnClickListener {
 
     private BookmarkList Bookmarks;
-    private String         comicName;
-    private String         comicImageUrl = "Notset";
-    private String         comicWebsite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +97,56 @@ public class AddComicActivity extends ActionBarActivity {
         return false;
 
     }
+    @Override
+    public void onClick(View v) {
+
+        AddComicFragment addComicFragment = (AddComicFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+        AddComicOnTouchListener  addComicOnTouchListener = addComicFragment.getAddComicOnTouchListener();
+
+        switch(v.getId())
+        {
+            case R.id.AddComicWebButton:
+                if(addComicOnTouchListener.canAddComic())
+                {
+                    ComicBuilder comicBuilder = new ComicBuilder();
+                    //Setting comic fields
+
+                    String comicname = addComicFragment.getComicName().getText().toString();
+                    String website = addComicFragment.getComicEditText().getText().toString();
+
+                    if(comicname.equals("")) comicname = "Unknown";
+
+                    Time time = new Time();
+                    time.setToNow();
+
+                    String imageUrl = addComicOnTouchListener.getImageUrl();
+                    String altText = "Null";
+
+                    ImageDownloadAsyncTask downloader = new ImageDownloadAsyncTask();
+                    downloader.execute(imageUrl);
+                    Bitmap comicBitmap = downloader.getBitmap();
+
+                    HtmlImage htmlImage = new HtmlImage(imageUrl, altText, comicBitmap);
+
+                    comicBuilder.Name(comicname)
+                            .SeenByUser(false)
+                            .LastUpdatedAt(time.toString())
+                            .Url(website)
+                            .HtmlImage(htmlImage);
+                    Comic comic = comicBuilder.BuildComic();
+
+                    ComicDataService dataService = new ComicDataService(getApplicationContext(), false);
+                    dataService.createComic(comic);
+                }
+                else
+                {
+                    Toast toast = Toast.makeText(this, "Incorrect Selection", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                break;
+        }
+
+    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -101,6 +157,7 @@ public class AddComicActivity extends ActionBarActivity {
         private TextView name;
         private EditText edittext;
         private Button addComicButton;
+        AddComicOnTouchListener addComicOnTouchListener;
 
         public AddComicFragment() {
 
@@ -111,7 +168,21 @@ public class AddComicActivity extends ActionBarActivity {
             webview.loadUrl(bookmark.getUrl());
             edittext.setText(bookmark.getUrl());
             name.setText(bookmark.getName());
+        }
 
+        public TextView getComicName()
+        {
+            return name;
+        }
+
+        public EditText getComicEditText()
+        {
+            return edittext;
+        }
+
+        public AddComicOnTouchListener getAddComicOnTouchListener()
+        {
+            return addComicOnTouchListener;
         }
 
 
@@ -129,6 +200,9 @@ public class AddComicActivity extends ActionBarActivity {
             webview.setWebViewClient(new VideoWebViewClient());
             webview.getSettings().setUseWideViewPort(true);
 
+            addComicOnTouchListener = new AddComicOnTouchListener("Not Set");
+            webview.setOnTouchListener(addComicOnTouchListener);
+
             return rootView;
         }
 
@@ -144,5 +218,7 @@ public class AddComicActivity extends ActionBarActivity {
 
         }
     }
+
+
 
 }

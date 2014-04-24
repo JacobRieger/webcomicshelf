@@ -15,6 +15,17 @@ import java.net.URL;
  */
 public class ImageDownloadAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
+    private Bitmap result;
+
+    public Bitmap getBitmap()
+    {
+        while(!this.isCancelled())
+        {
+
+        }
+        return result;
+    }
+
     @Override
     protected Bitmap doInBackground(String... strings) {
         boolean DEBUG = true;
@@ -67,5 +78,11 @@ public class ImageDownloadAsyncTask extends AsyncTask<String, Void, Bitmap> {
             Bitmap bitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ALPHA_8);
             return bitmap;
         }
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap bitmap)
+    {
+        result = bitmap;
     }
 }
