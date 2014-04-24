@@ -139,8 +139,7 @@ public class ComicDataService extends SQLiteOpenHelper {
 
         List<String> comicNames = new ArrayList<String>();
 
-        cursor.moveToFirst();
-        while(!cursor.moveToNext())
+        while(cursor.moveToNext())
         {
             String name = cursor.getString(0);
             comicNames.add(name);

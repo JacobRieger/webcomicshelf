@@ -9,5 +9,16 @@
     <string name="title_activity_tester">TesterActivity</string>
     <string name="title_comic_list">Comics</string>
     <string name="title_comic_detail">Comic Detail</string>
+    <string name="title_activity_add_comic">AddComicActivity</string>
+    <string name="UpdateAll">Update</string>
+    <string name="AddComicButton">Add Comic</string>
+    <string name="Viewcomics">View Comics</string>
+    <string name="menu_settings">Settings</string>
+    <string name="UrlHint">http://www.webcomic.com/comics</string>
+    <string name="AddComic">Add Comic</string>
+    <string name="Url">Url</string>
+    <string name="ComicName">Comic Name</string>
+    <string name="Name">Name</string>
+    <string name="addComicBookmarkTitle">Add from bookmark</string>
 
 </resources>

@@ -1,5 +1,8 @@
 package services.network.async;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -10,10 +13,38 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import activities.ComicListActivity;
+import domain.Comic;
+import domain.HtmlImage;
+import services.database.ComicDataService;
+import services.utilities.ComicBuilder;
+
 /**
  * Created by Jacob on 3/16/14.
  */
 public class ImageDownloadAsyncTask extends AsyncTask<String, Void, Bitmap> {
+
+    private ProgressDialog pdialog;
+    private Context context;
+    private ComicBuilder comicBuilder;
+    private HtmlImage htmlImage;
+
+    public ImageDownloadAsyncTask(Context _context, ComicBuilder _comicBuilder, HtmlImage _htmlImage)
+    {
+        context = _context;
+        comicBuilder = _comicBuilder;
+        htmlImage = _htmlImage;
+    }
+
+    @Override
+    protected void onPreExecute()
+    {
+        pdialog = new ProgressDialog(context);
+        pdialog.setCancelable(false);
+        pdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pdialog.setMessage("Adding Comic...");
+        pdialog.show();
+    }
 
     @Override
     protected Bitmap doInBackground(String... strings) {
@@ -67,5 +98,23 @@ public class ImageDownloadAsyncTask extends AsyncTask<String, Void, Bitmap> {
             Bitmap bitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ALPHA_8);
             return bitmap;
         }
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap bitmap)
+    {
+        htmlImage.setBitmap(bitmap);
+        comicBuilder.HtmlImage(htmlImage);
+        Comic comic = comicBuilder.BuildComic();
+
+        ComicDataService dataService = new ComicDataService(context, false);
+        dataService.createComic(comic);
+
+        pdialog.dismiss();
+
+        Intent intent = new Intent(context, ComicListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }
