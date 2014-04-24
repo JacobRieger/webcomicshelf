@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="activities.AddComicActivity" >
     
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    <item android:id="@+id/addComicBookmarks"
+        android:title="@string/addComicBookmarkTitle"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_menu_bookmark"
+        app:showAsAction="ifRoom|withText" >
+    <menu></menu>
+    </item>
 </menu>
