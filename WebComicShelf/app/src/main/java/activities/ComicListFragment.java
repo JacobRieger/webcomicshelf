@@ -76,9 +76,6 @@ public class ComicListFragment extends ListFragment {
         ComicDataService comicDataService = new ComicDataService(getActivity(), true);
 
         List<String> comicNames = comicDataService.getAllComicNames();
-//        List<String> comicNames = new ArrayList<String>();
-//        comicNames.add("Test Comic");
-//        comicNames.add("Another Test Comic");
 
         ArrayAdapter<String> stringAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, comicNames);

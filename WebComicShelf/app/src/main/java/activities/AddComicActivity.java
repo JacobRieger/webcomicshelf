@@ -3,7 +3,9 @@ package activities;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -122,21 +124,15 @@ public class AddComicActivity extends ActionBarActivity implements View.OnClickL
                     String imageUrl = addComicOnTouchListener.getImageUrl();
                     String altText = "Null";
 
-                    ImageDownloadAsyncTask downloader = new ImageDownloadAsyncTask();
-                    downloader.execute(imageUrl);
-                    Bitmap comicBitmap = downloader.getBitmap();
-
-                    HtmlImage htmlImage = new HtmlImage(imageUrl, altText, comicBitmap);
-
                     comicBuilder.Name(comicname)
                             .SeenByUser(false)
                             .LastUpdatedAt(time.toString())
-                            .Url(website)
-                            .HtmlImage(htmlImage);
-                    Comic comic = comicBuilder.BuildComic();
+                            .Url(website);
 
-                    ComicDataService dataService = new ComicDataService(getApplicationContext(), false);
-                    dataService.createComic(comic);
+                    HtmlImage htmlImage = new HtmlImage(imageUrl, altText, Bitmap.createBitmap(1,1, Bitmap.Config.ALPHA_8));
+
+                    ImageDownloadAsyncTask downloader = new ImageDownloadAsyncTask(this, comicBuilder, htmlImage);
+                    downloader.execute(imageUrl);
                 }
                 else
                 {
@@ -202,6 +198,8 @@ public class AddComicActivity extends ActionBarActivity implements View.OnClickL
 
             addComicOnTouchListener = new AddComicOnTouchListener("Not Set");
             webview.setOnTouchListener(addComicOnTouchListener);
+
+            addComicButton.setOnClickListener((AddComicActivity) getActivity());
 
             return rootView;
         }
