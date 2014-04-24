@@ -1,5 +1,8 @@
 package activities;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,23 +14,20 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.app.R;
 
+import domain.Bookmark;
 import services.utilities.BookmarkList;
 import services.utilities.BookmarkLoader;
 
 public class AddComicActivity extends ActionBarActivity {
 
-
-    private WebView webview;
-    private TextView name;
-    private EditText edittext;
     private BookmarkList Bookmarks;
-    private Button addComicButton;
     private String         comicName;
     private String         comicImageUrl = "Notset";
     private String         comicWebsite;
@@ -42,14 +42,12 @@ public class AddComicActivity extends ActionBarActivity {
             Bookmarks = new BookmarkLoader(this).getBookmarks();
         }
 
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new AddComicFragment())
                     .commit();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,11 +76,19 @@ public class AddComicActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
 
-        return super.onOptionsItemSelected(item);
+        //If our item is a bookmark, we load up it's data into the entry fields
+        if(item.getGroupId() == 32)
+        {
+            Bookmark current = Bookmarks.find(item.getTitle().toString());
+
+            AddComicFragment addComicFragment = (AddComicFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+            addComicFragment.AddBookmarkInfo(current);
+
+            return true;
+        }
+
+        return false;
 
     }
 
@@ -91,14 +97,51 @@ public class AddComicActivity extends ActionBarActivity {
      */
     public static class AddComicFragment extends Fragment {
 
+        private WebView webview;
+        private TextView name;
+        private EditText edittext;
+        private Button addComicButton;
+
         public AddComicFragment() {
+
         }
+
+        public void AddBookmarkInfo(Bookmark bookmark)
+        {
+            webview.loadUrl(bookmark.getUrl());
+            edittext.setText(bookmark.getUrl());
+            name.setText(bookmark.getName());
+
+        }
+
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_add_comic, container, false);
+
+            //Wire up the views to our code here
+            webview        = (WebView)  rootView.findViewById(R.id.AddComicWebView);
+            edittext       = (EditText) rootView.findViewById(R.id.AddComicWebEdit);
+            addComicButton = (Button) rootView.findViewById(R.id.AddComicWebButton);
+            name           = (EditText) rootView.findViewById(R.id.AddComicWebEditName);
+
+            webview.setWebViewClient(new VideoWebViewClient());
+            webview.getSettings().setUseWideViewPort(true);
+
             return rootView;
+        }
+
+        private class VideoWebViewClient extends WebViewClient {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                //view.loadUrl(url);
+                edittext.setText(url);
+
+                return false;
+            }
+
         }
     }
 
