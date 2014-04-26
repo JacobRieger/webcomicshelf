@@ -1,6 +1,7 @@
 package activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -51,6 +52,7 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
         setContentView(R.layout.activity_comic_gallery);
         //Our database on the  phone
         ComicDataService database = new ComicDataService(this, true);
+        Comics = database.getAllComics();
 
         // Create the adapter that will return a fragment
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -67,7 +69,7 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
         //This is for when the app is destroyed
         //Loads all comics from the database to the current activity
         //Comics = db.getAllComics();
-        Comics = database.getAllComics();
+
         //Log.d("OnCreateFinished", Integer.toString(Comics.size()));
     }
 
@@ -173,8 +175,9 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
             //Set the onClickListener
 
 
-            ComicLoader loader = new ComicLoader(imageView, getActivity());
-            loader.execute(Comics.get(args.getInt(ARG_SECTION_NUMBER)).getName());
+//            ComicLoader loader = new ComicLoader(imageView, getActivity());
+//            loader.execute(Comics.get(args.getInt(ARG_SECTION_NUMBER)).getName());
+
             //.getComicBitmap());
             //Comic temp = Comics.get(args.getInt(ARG_SECTION_NUMBER));
             //Log.d("Comic", temp.getName() + " " + temp.getImageUrl());
