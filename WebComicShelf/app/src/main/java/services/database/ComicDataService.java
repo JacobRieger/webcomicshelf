@@ -113,10 +113,11 @@ public class ComicDataService extends SQLiteOpenHelper {
     {
         List<Comic> comics = new ArrayList<Comic>();
 
-        Cursor cursor = queryFor(KEY_ID, "");
+        SQLiteDatabase database = this.getReadableDatabase();
 
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast())
+        Cursor cursor = queryFor(KEY_ID, "*");
+
+        while(cursor.moveToNext())
         {
             Comic comic = cursorToComic(cursor);
             comics.add(comic);
@@ -232,15 +233,8 @@ public class ComicDataService extends SQLiteOpenHelper {
             return null;
         }
 
-        Cursor cursor = database.query(TABLE_WEBCOMICS, new String[]
-                {KEY_ID,
-                        KEY_NAME,
-                        KEY_SITE_URL,
-                        KEY_SOURCE,
-                        KEY_ALT_TEXT,
-                        KEY_BITMAP,
-                        KEY_SEEN_BY_USER,
-                        KEY_LAST_UPDATED_AT }, columnName + "=?",
+        Cursor cursor = database.query(TABLE_WEBCOMICS,
+                null, columnName + "=?",
                 new String[] { value }, null, null, null, null);
 
         return cursor;
