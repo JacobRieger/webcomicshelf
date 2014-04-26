@@ -115,7 +115,7 @@ public class ComicDataService extends SQLiteOpenHelper {
 
         SQLiteDatabase database = this.getReadableDatabase();
 
-        Cursor cursor = queryFor(KEY_ID, "*");
+        Cursor cursor = database.rawQuery("select * from " + TABLE_WEBCOMICS, null);
 
         while(cursor.moveToNext())
         {
