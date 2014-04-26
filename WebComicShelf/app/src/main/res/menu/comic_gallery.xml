@@ -7,4 +7,18 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         app:showAsAction="never" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <item
+        android:id="@+id/selection"
+        android:title="@string/selectComic"
+        android:showAsAction="ifRoom|withText">
+        <menu>
+        </menu>
+    </item>
 </menu>
