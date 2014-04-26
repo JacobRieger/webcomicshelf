@@ -174,6 +174,9 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
             Bundle args = getArguments();
             //Set the onClickListener
 
+            Bitmap comicBitmap = Comics.get(args.getInt(ARG_SECTION_NUMBER)).get_htmlImage().getBitmap();
+            imageView.setImageBitmap(comicBitmap);
+
 
 //            ComicLoader loader = new ComicLoader(imageView, getActivity());
 //            loader.execute(Comics.get(args.getInt(ARG_SECTION_NUMBER)).getName());
