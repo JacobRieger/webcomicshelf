@@ -64,4 +64,9 @@ public class ComicDetailFragment extends Fragment {
 
         return rootView;
     }
+
+    public Comic getSelectedComic()
+    {
+        return selectedComic;
+    }
 }

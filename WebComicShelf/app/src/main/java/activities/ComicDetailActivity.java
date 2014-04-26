@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.example.app.R;
 
 /**
@@ -50,19 +54,43 @@ public class ComicDetailActivity extends FragmentActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        menu.clear();
+
+        inflater.inflate(R.menu.comic_detail, menu);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            NavUtils.navigateUpTo(this, new Intent(this, ComicListActivity.class));
-            return true;
+
+        switch(id)
+        {
+            case android.R.id.home:
+                // This ID represents the Home or Up button. In the case of this
+                // activity, the Up button is shown. Use NavUtils to allow users
+                // to navigate up one level in the application structure. For
+                // more details, see the Navigation pattern on Android Design:
+                //
+                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+                //
+                NavUtils.navigateUpTo(this, new Intent(this, ComicListActivity.class));
+                return true;
+            case R.id.ViewBrowser:
+                break;
+
+            case R.id.ViewAltText:
+                ComicDetailFragment comicDetailFragment =(ComicDetailFragment) getSupportFragmentManager().findFragmentById(R.id.comic_detail_container);
+                String altText = comicDetailFragment.getSelectedComic().get_htmlImage().getAltText();
+                Toast altTextToast = Toast.makeText(getApplicationContext(), altText, Toast.LENGTH_LONG);
+                altTextToast.show();
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

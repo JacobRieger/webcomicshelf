@@ -20,5 +20,7 @@
     <string name="ComicName">Comic Name</string>
     <string name="Name">Name</string>
     <string name="addComicBookmarkTitle">Add from bookmark</string>
+    <string name="ViewAltText">Alt Text</string>
+    <string name="VisitSite">Website</string>
 
 </resources>
