@@ -200,20 +200,16 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
 
     @Override
     public boolean onLongClick(View view) {
-        Log.d("OnLongClick", view.toString());
         ComicDataService database = new ComicDataService(this, true);
 
         if (view.getClass() == ImageView.class) {
             //Our current comic
             Comic Selected = database.getComic(mSectionsPagerAdapter.getPageTitle(mViewPager.getCurrentItem()).toString());
-            //We pass extras to know which comic to view
-            Intent intent = new Intent(this, ComicGalleryActivity.class);
-            intent.putExtra("ImageUrl", Selected.get_htmlImage().getSource());
-            intent.putExtra("Name", Selected.get_name());
-            intent.putExtra("Url", Selected.get_url());
-            startActivity(intent);
+
+            Intent detailIntent = new Intent(this, ComicDetailActivity.class);
+            detailIntent.putExtra(ComicDetailFragment.COMIC_ID, Long.toString(Selected.get_id() - 1));
+            startActivity(detailIntent);
         }
-        //Log.d("ViewComics - LongClick", String.valueOf(mViewPager.getCurrentItem()));
         return false;
     }
 }
