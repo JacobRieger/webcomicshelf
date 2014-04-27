@@ -26,6 +26,7 @@ import java.util.List;
 
 import domain.Comic;
 import services.database.ComicDataService;
+import services.database.ComicImageViewLoader;
 import services.utilities.BookmarkList;
 
 public class ComicGalleryActivity extends FragmentActivity implements View.OnLongClickListener {
@@ -178,8 +179,8 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
             imageView.setImageBitmap(comicBitmap);
 
 
-//            ComicLoader loader = new ComicLoader(imageView, getActivity());
-//            loader.execute(Comics.get(args.getInt(ARG_SECTION_NUMBER)).getName());
+            ComicImageViewLoader loader = new ComicImageViewLoader(imageView, getActivity());
+            loader.execute(Comics.get(args.getInt(ARG_SECTION_NUMBER)).get_name());
 
             //.getComicBitmap());
             //Comic temp = Comics.get(args.getInt(ARG_SECTION_NUMBER));
