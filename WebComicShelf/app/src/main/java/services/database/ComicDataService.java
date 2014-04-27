@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,12 +203,46 @@ public class ComicDataService extends SQLiteOpenHelper {
 
         Comic comic = builder.BuildComic();
 
+        database.close();
+
         return comic;
     }
 
     public Comic getComic(String name)
     {
-        return null;
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        if(database == null)
+        {
+            return null;
+        }
+
+        Cursor cursor = queryFor(KEY_NAME, name);
+
+        if(cursor.getCount() == 0 || cursor == null)
+        {
+            Log.d("Database", "Comic does not exist : " + name);
+            return null;
+        }
+
+        cursor.moveToFirst();
+
+        ComicBuilder builder = new ComicBuilder();
+
+        HtmlImage htmlImage = new HtmlImage(cursor.getString(3), cursor.getString(4), cursor.getBlob(5));
+
+        builder.Id(cursor.getInt(0))
+                .Name(cursor.getString(1))
+                .Url(cursor.getString(2))
+                .HtmlImage(htmlImage)
+                .SeenByUser(cursor.getString(6).equals("1"))
+                .LastUpdatedAt(cursor.getString(7));
+
+        Comic comic = builder.BuildComic();
+
+        database.close();
+
+        return comic;
     }
 
     private ContentValues getContentValuesFor(Comic comic)
@@ -256,4 +292,13 @@ public class ComicDataService extends SQLiteOpenHelper {
         Comic comic = builder.BuildComic();
         return comic;
     }
+
+    public static byte[] getBytesFromBitmap(Bitmap bitmap)
+    {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
 }
