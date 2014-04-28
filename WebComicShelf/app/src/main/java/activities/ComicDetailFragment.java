@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.example.app.R;
 
 import domain.Comic;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 import services.database.ComicDataService;
 
 /**
@@ -46,7 +48,7 @@ public class ComicDetailFragment extends Fragment {
 
             long comicId = Long.parseLong(getArguments().getString(COMIC_ID));
 
-            selectedComic = dataService.getComic(comicId);
+            selectedComic = dataService.getComic(comicId+1);
             dataService.close();
         }
     }
@@ -56,11 +58,17 @@ public class ComicDetailFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_comic_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
         if (selectedComic != null) {
-            ((TextView) rootView.findViewById(R.id.comic_detail)).setText(selectedComic.get_name());
+            ImageViewTouch imageView = (ImageViewTouch) rootView.findViewById(R.id.ImageView01);
+            imageView.setImageBitmap(selectedComic.get_htmlImage().getBitmap());
+            imageView.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         }
 
         return rootView;
+    }
+
+    public Comic getSelectedComic()
+    {
+        return selectedComic;
     }
 }

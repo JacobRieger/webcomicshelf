@@ -108,6 +108,8 @@ public class ComicListActivity extends FragmentActivity
             case R.id.menuButtonUpdate:
                 break;
             case R.id.menuButtonViewAllComics:
+                Intent comicGalleryIntent = new Intent(this, ComicGalleryActivity.class);
+                startActivity(comicGalleryIntent);
                 break;
         }
 

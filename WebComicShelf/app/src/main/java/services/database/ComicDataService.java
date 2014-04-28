@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,10 +115,11 @@ public class ComicDataService extends SQLiteOpenHelper {
     {
         List<Comic> comics = new ArrayList<Comic>();
 
-        Cursor cursor = queryFor(KEY_ID, "");
+        SQLiteDatabase database = this.getReadableDatabase();
 
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast())
+        Cursor cursor = database.rawQuery("select * from " + TABLE_WEBCOMICS, null);
+
+        while(cursor.moveToNext())
         {
             Comic comic = cursorToComic(cursor);
             comics.add(comic);
@@ -200,12 +203,46 @@ public class ComicDataService extends SQLiteOpenHelper {
 
         Comic comic = builder.BuildComic();
 
+        database.close();
+
         return comic;
     }
 
     public Comic getComic(String name)
     {
-        return null;
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        if(database == null)
+        {
+            return null;
+        }
+
+        Cursor cursor = queryFor(KEY_NAME, name);
+
+        if(cursor.getCount() == 0 || cursor == null)
+        {
+            Log.d("Database", "Comic does not exist : " + name);
+            return null;
+        }
+
+        cursor.moveToFirst();
+
+        ComicBuilder builder = new ComicBuilder();
+
+        HtmlImage htmlImage = new HtmlImage(cursor.getString(3), cursor.getString(4), cursor.getBlob(5));
+
+        builder.Id(cursor.getInt(0))
+                .Name(cursor.getString(1))
+                .Url(cursor.getString(2))
+                .HtmlImage(htmlImage)
+                .SeenByUser(cursor.getString(6).equals("1"))
+                .LastUpdatedAt(cursor.getString(7));
+
+        Comic comic = builder.BuildComic();
+
+        database.close();
+
+        return comic;
     }
 
     private ContentValues getContentValuesFor(Comic comic)
@@ -232,15 +269,8 @@ public class ComicDataService extends SQLiteOpenHelper {
             return null;
         }
 
-        Cursor cursor = database.query(TABLE_WEBCOMICS, new String[]
-                {KEY_ID,
-                        KEY_NAME,
-                        KEY_SITE_URL,
-                        KEY_SOURCE,
-                        KEY_ALT_TEXT,
-                        KEY_BITMAP,
-                        KEY_SEEN_BY_USER,
-                        KEY_LAST_UPDATED_AT }, columnName + "=?",
+        Cursor cursor = database.query(TABLE_WEBCOMICS,
+                null, columnName + "=?",
                 new String[] { value }, null, null, null, null);
 
         return cursor;
@@ -262,4 +292,13 @@ public class ComicDataService extends SQLiteOpenHelper {
         Comic comic = builder.BuildComic();
         return comic;
     }
+
+    public static byte[] getBytesFromBitmap(Bitmap bitmap)
+    {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
 }

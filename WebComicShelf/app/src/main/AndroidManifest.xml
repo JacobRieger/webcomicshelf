@@ -33,6 +33,10 @@
             android:name="activities.AddComicActivity"
             android:label="@string/title_activity_add_comic" >
         </activity>
+        <activity
+            android:name="activities.ComicGalleryActivity"
+            android:label="@string/title_activity_comic_gallery" >
+        </activity>
     </application>
 
 </manifest>
