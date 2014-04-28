@@ -34,12 +34,12 @@ public class AddComicOnTouchListener implements OnTouchListener {
             {
                 if(hr.getType() == WebView.HitTestResult.IMAGE_TYPE)
                 {
-                    Log.d("CustomOnTouchListener", hr.getExtra());
+//                    Log.d("CustomOnTouchListener", hr.getExtra());
                     Imageurl = hr.getExtra();
                 }
                 else
                 {
-                    Log.d("CustomOnTouchListener", "Not an IMAGE_TYPE" + hr.getExtra());
+//                    Log.d("CustomOnTouchListener", "Not an IMAGE_TYPE" + hr.getExtra());
                     Imageurl = hr.getExtra();
 
                 }
