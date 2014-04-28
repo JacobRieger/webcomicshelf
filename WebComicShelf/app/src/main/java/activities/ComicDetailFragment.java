@@ -11,6 +11,7 @@ import com.example.app.R;
 
 import domain.Comic;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 import services.database.ComicDataService;
 
 /**
@@ -60,6 +61,7 @@ public class ComicDetailFragment extends Fragment {
         if (selectedComic != null) {
             ImageViewTouch imageView = (ImageViewTouch) rootView.findViewById(R.id.ImageView01);
             imageView.setImageBitmap(selectedComic.get_htmlImage().getBitmap());
+            imageView.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         }
 
         return rootView;
