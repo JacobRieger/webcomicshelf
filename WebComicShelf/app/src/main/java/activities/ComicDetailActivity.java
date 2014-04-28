@@ -85,7 +85,8 @@ public class ComicDetailActivity extends FragmentActivity {
                 break;
 
             case R.id.ViewAltText:
-                ComicDetailFragment comicDetailFragment =(ComicDetailFragment) getSupportFragmentManager().findFragmentById(R.id.comic_detail_container);
+                ComicDetailFragment comicDetailFragment =(ComicDetailFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.comic_detail_container);
                 String altText = comicDetailFragment.getSelectedComic().get_htmlImage().getAltText();
                 Toast altTextToast = Toast.makeText(getApplicationContext(), altText, Toast.LENGTH_LONG);
                 altTextToast.show();
