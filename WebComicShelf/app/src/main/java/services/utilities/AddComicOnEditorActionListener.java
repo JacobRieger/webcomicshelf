@@ -24,13 +24,20 @@ public class AddComicOnEditorActionListener implements TextView.OnEditorActionLi
     @Override
     public boolean onEditorAction(TextView textview, int actionId, KeyEvent event) {
 
-        if(event != null)
+        if(edittext == null || edittext.getText() == null || edittext.getText().toString() == null)
         {
-            Log.d("CustomOnEditorActionListener", "Event was not Null");
+            if(textview != null && textview.getText() != null)
+            {
+                String url = textview.getText().toString();
+
+                webview.loadUrl(url);
+            }
+        }
+        else
+        {
             webview.loadUrl((edittext.getText().toString()));
         }
-        Log.d("CustomOnEditorActionListener", "Event was Null");
-        webview.loadUrl((edittext.getText().toString()));
+        
         return false;
     }
 
