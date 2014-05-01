@@ -12,7 +12,6 @@ import android.webkit.WebView;
 public class AddComicOnTouchListener implements OnTouchListener {
 
     private String Imageurl;
-    private int iterator = 0;
 
     public AddComicOnTouchListener(String imageurl)
     {
@@ -22,32 +21,23 @@ public class AddComicOnTouchListener implements OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        WebView.HitTestResult hr = ((WebView)v).getHitTestResult();
-        Log.d("CustomOnTouchListener", String.valueOf(iterator));
-        iterator++;
-
-
-
-        try{
-
-            if(hr != null)
+        WebView.HitTestResult hitTestResult = ((WebView)v).getHitTestResult();
+        try
+        {
+            if(hitTestResult != null)
             {
-                if(hr.getType() == WebView.HitTestResult.IMAGE_TYPE)
+                if(hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE)
                 {
-//                    Log.d("CustomOnTouchListener", hr.getExtra());
-                    Imageurl = hr.getExtra();
+                    Imageurl = hitTestResult.getExtra();
                 }
                 else
                 {
-//                    Log.d("CustomOnTouchListener", "Not an IMAGE_TYPE" + hr.getExtra());
-                    Imageurl = hr.getExtra();
-
+                    Imageurl = hitTestResult.getExtra();
                 }
             }
         }
         catch(Exception e)
         {
-            //Log.d("CustomOnTouchListener", e.getMessage());
             e.printStackTrace();
         }
         return false;
