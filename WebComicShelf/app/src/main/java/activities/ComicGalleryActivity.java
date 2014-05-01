@@ -86,28 +86,19 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
             //Set the button names in the submenus
             //Can't have them both be the same, still need to investigate
             GoTo.add((Comics.get(i).get_name()));
-            //select.getSubMenu().add(ComicNames.get(i));
         }
-
-
-
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu)
     {
-
-
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-
-        //DataBaseHandler db = new DataBaseHandler(this);
         String Title = item.getTitle().toString();
 
         for(int i = 0; i < Comics.size(); i++)
@@ -125,33 +116,31 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int i) {
+
             //Create our new fragment
             Fragment fragment = new ComicFragment();
             Bundle args = new Bundle();
             //We put into the bundle the section it's placed in
             args.putInt(ComicFragment.ARG_SECTION_NUMBER, i);
-            //args.putString("Url", Comics.get(i).getImageUrl());
             fragment.setArguments(args);
+
             return fragment;
         }
 
         @Override
         public int getCount() {
-            //DataBaseHandler db = new DataBaseHandler(getApplicationContext());
             return Comics.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             //This sets the top of the page to the comics name
-            //DataBaseHandler db = new DataBaseHandler(getApplicationContext());
             return Comics.get(position).get_name();
         }
     }
@@ -163,39 +152,23 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
         public static final String ARG_SECTION_NUMBER = "section_number";
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            //Our DoubleTap listener
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
             //We create our new imageview to be displayed
             ImageView imageView = new ImageView(getActivity());
-            //WeakReference<ImageView> WeakImageView = new WeakReference<ImageView>(imageView);
-            //ImageViewTouch imageView = new ImageViewTouch(getActivity(), null);
-            //Get the arguments
-            //Position of comicList
+
             Bundle args = getArguments();
-            //Set the onClickListener
 
             Bitmap comicBitmap = Comics.get(args.getInt(ARG_SECTION_NUMBER)).get_htmlImage().getBitmap();
             imageView.setImageBitmap(comicBitmap);
 
-
             ComicImageViewLoader loader = new ComicImageViewLoader(imageView, getActivity());
             loader.execute(Comics.get(args.getInt(ARG_SECTION_NUMBER)).get_name());
 
-            //.getComicBitmap());
-            //Comic temp = Comics.get(args.getInt(ARG_SECTION_NUMBER));
-            //Log.d("Comic", temp.getName() + " " + temp.getImageUrl());
-            //Log.d("OnCreateView", "ComicLoader executed");
-            //ComicLoader Loading = new ComicLoader(WeakImageView,
-            //	ComicNames.get(args.getInt(ARG_SECTION_NUMBER)), getActivity());
-
-            //Loading.execute();
             //OnLong click for enabling zoom and pan
             imageView.setOnLongClickListener((ComicGalleryActivity) getActivity());
             return imageView;
         }
-
-
     }
 
     @Override

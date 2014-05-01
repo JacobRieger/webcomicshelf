@@ -31,6 +31,7 @@ import domain.Comic;
 import domain.HtmlImage;
 import services.database.ComicDataService;
 import services.network.async.ImageDownloadAsyncTask;
+import services.utilities.AddComicOnEditorActionListener;
 import services.utilities.AddComicOnTouchListener;
 import services.utilities.BookmarkList;
 import services.utilities.BookmarkLoader;
@@ -201,6 +202,8 @@ public class AddComicActivity extends ActionBarActivity implements View.OnClickL
 
             addComicButton.setOnClickListener((AddComicActivity) getActivity());
 
+            edittext.setOnEditorActionListener(new AddComicOnEditorActionListener(webview, edittext));
+
             return rootView;
         }
 
@@ -208,7 +211,7 @@ public class AddComicActivity extends ActionBarActivity implements View.OnClickL
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-                //view.loadUrl(url);
+                view.loadUrl(url);
                 edittext.setText(url);
 
                 return false;
