@@ -153,7 +153,6 @@ public class ComicDataService extends SQLiteOpenHelper {
         return comicNames;
     }
 
-
     public int count()
     {
         SQLiteDatabase database = this.getReadableDatabase();
