@@ -1,3 +1,5 @@
+
+
 package activities;
 
 import android.content.Intent;
@@ -43,8 +45,7 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
-    public static List<Comic> Comics;
-    //public static ArrayList<String> ComicNames;
+    public static List<String> ComicNames;
     public BookmarkList Bookmarks;
 
     @Override
@@ -53,7 +54,7 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
         setContentView(R.layout.activity_comic_gallery);
         //Our database on the  phone
         ComicDataService database = new ComicDataService(this, true);
-        Comics = database.getAllComics();
+        ComicNames = database.getAllComicNames();
 
         // Create the adapter that will return a fragment
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -65,13 +66,6 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
         pagerTitleStrip.setTextSize(1, 25);
         pagerTitleStrip.setTextColor(Color.WHITE);
         pagerTitleStrip.setBackgroundColor(Color.BLACK);
-
-
-        //This is for when the app is destroyed
-        //Loads all comics from the database to the current activity
-        //Comics = db.getAllComics();
-
-        //Log.d("OnCreateFinished", Integer.toString(Comics.size()));
     }
 
     @Override
@@ -81,11 +75,11 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
         // SubMenu GoTo = menu.addSubMenu("Select Comic");
         // MenuItem select = menu.findItem(R.id.selection);
         SubMenu GoTo = menu.findItem(R.id.selection).getSubMenu();
-        for(int i = 0; i < Comics.size(); i++)
+        for(int i = 0; i < ComicNames.size(); i++)
         {
             //Set the button names in the submenus
             //Can't have them both be the same, still need to investigate
-            GoTo.add((Comics.get(i).get_name()));
+            GoTo.add((ComicNames.get(i)));
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -101,17 +95,14 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
     {
         String Title = item.getTitle().toString();
 
-        for(int i = 0; i < Comics.size(); i++)
+        for(int i = 0; i < ComicNames.size(); i++)
         {
-            if(Title.equals((Comics.get(i).get_name())))
+            if(Title.equals((ComicNames.get(i))))
             {
-                //Sets our view to the selected comic
                 mViewPager.setCurrentItem(i);
             }
         }
-
         return super.onOptionsItemSelected(item);
-
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -135,13 +126,13 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
 
         @Override
         public int getCount() {
-            return Comics.size();
+            return ComicNames.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             //This sets the top of the page to the comics name
-            return Comics.get(position).get_name();
+            return ComicNames.get(position);
         }
     }
 
@@ -159,11 +150,8 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
 
             Bundle args = getArguments();
 
-            Bitmap comicBitmap = Comics.get(args.getInt(ARG_SECTION_NUMBER)).get_htmlImage().getBitmap();
-            imageView.setImageBitmap(comicBitmap);
-
             ComicImageViewLoader loader = new ComicImageViewLoader(imageView, getActivity());
-            loader.execute(Comics.get(args.getInt(ARG_SECTION_NUMBER)).get_name());
+            loader.execute(ComicNames.get(args.getInt(ARG_SECTION_NUMBER)));
 
             //OnLong click for enabling zoom and pan
             imageView.setOnLongClickListener((ComicGalleryActivity) getActivity());
