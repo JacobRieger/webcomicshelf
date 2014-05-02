@@ -104,8 +104,6 @@ public class ComicDataService extends SQLiteOpenHelper {
 
         Comic databaseComic =  getComic(id);
 
-        List<Comic> comics = getAllComics();
-
         database.close();
 
         return databaseComic;
