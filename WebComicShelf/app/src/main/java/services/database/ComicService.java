@@ -108,12 +108,25 @@ public class ComicService extends SQLiteOpenHelper {
         return databaseComic;
     }
 
-    public Comic updateComic(Comic comic)
+    public long updateComic(Comic comic)
     {
         ContentValues comicValues = new ContentValues();
+        HtmlImage htmlImage = comic.get_htmlImage();
+        byte[] bitmapBytes = getBytesFromBitmap(htmlImage.getBitmap());
 
-        int value = db.update(TABLE_WEBCOMICS, comicValues, KEY_ID + " = ?",
-                new String[] { String.valueOf(comic.getId()) });
+        comicValues.put(KEY_ID, comic.get_id());
+        comicValues.put(KEY_NAME, comic.get_name());
+        comicValues.put(KEY_SITE_URL, comic.get_url());
+        comicValues.put(KEY_SOURCE, htmlImage.getSource());
+        comicValues.put(KEY_ALT_TEXT, htmlImage.getAltText());
+        comicValues.put(KEY_BITMAP, bitmapBytes);
+        comicValues.put(KEY_LAST_UPDATED_AT, comic.get_lastUpdatedAt());
+        comicValues.put(KEY_SEEN_BY_USER, comic.get_seenByUser());
+
+        int value = database.update(TABLE_WEBCOMICS, comicValues, KEY_ID + " = ?",
+                new String[] { String.valueOf(comic.get_id()) });
+
+        return value;
     }
 
     public List<Comic> getAllComics()
