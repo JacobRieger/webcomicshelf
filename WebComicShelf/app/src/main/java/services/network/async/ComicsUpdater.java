@@ -22,27 +22,29 @@ public class ComicsUpdater extends AsyncTask<Void, Void, Void> {
 
     Context context;
     ProgressDialog progressDialog;
-    ComicService comicService;
 
     public ComicsUpdater(Context ourcontext)
     {
         context = ourcontext;
-        comicService = new ComicService(context, false);
     }
 
     @Override
     protected void onPreExecute()
     {
+        ComicService comicService = new ComicService(context, false);
         progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setMax(comicService.getCount());
         progressDialog.setMessage("Updating Comics");
         progressDialog.show();
+        comicService.close();
     }
 
     @Override
     protected Void doInBackground(Void... params) {
+
+        ComicService comicService = new ComicService(context, false);
 
         List<String> comicNames = comicService.getAllComicNames();
         for(int i = 0; i < comicService.getCount(); i++)
@@ -84,13 +86,11 @@ public class ComicsUpdater extends AsyncTask<Void, Void, Void> {
         try
         {
             progressDialog.dismiss();
-            comicService.close();
         }
         catch(Exception e)
         {
             Toast alert = Toast.makeText(context, "Comic Updates Complete", Toast.LENGTH_LONG);
             alert.show();
-            comicService.close();
         }
     }
 
