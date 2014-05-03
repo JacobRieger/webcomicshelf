@@ -12,16 +12,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import activities.ComicListActivity;
 import domain.Comic;
 import domain.HtmlImage;
-import services.database.ComicDataService;
+import services.database.ComicService;
 import services.network.JsoupComicScraper;
 import services.utilities.ComicBuilder;
-import services.utilities.LevenshteinDistance;
+import services.utilities.StringComparer;
 
 /**
  * Created by Jacob on 3/16/14.
@@ -117,7 +116,7 @@ public class ImageDownloadAsyncTask extends AsyncTask<String, Void, Bitmap> {
         comicBuilder.HtmlImage(htmlImage);
         Comic comic = comicBuilder.BuildComic();
 
-        ComicDataService dataService = new ComicDataService(context, false);
+        ComicService dataService = new ComicService(context);
         dataService.createComic(comic);
 
         pdialog.dismiss();
@@ -138,7 +137,7 @@ public class ImageDownloadAsyncTask extends AsyncTask<String, Void, Bitmap> {
         HtmlImage minScoredHtmlImage = htmlImageList.get(0);
         for (HtmlImage listItem : htmlImageList)
         {
-            int result = LevenshteinDistance.computeLevenshteinDistance(listItem.getSource(), imageUrl);
+            int result = StringComparer.computeLevenshteinDistance(listItem.getSource(), imageUrl);
             if(result < minScore)
             {
                 minScoredHtmlImage = listItem;

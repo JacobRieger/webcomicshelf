@@ -10,12 +10,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import services.database.ComicDataService;
+import services.database.ComicService;
 
 
 public class ComicListAdapter extends BaseAdapter {
 
-    private ComicDataService      db;
+    private ComicService db;
     private Context               _context;
     private static LayoutInflater inflater=null;
     private List<String>          names;
@@ -23,11 +23,11 @@ public class ComicListAdapter extends BaseAdapter {
 
     public ComicListAdapter(Context context, Activity activity) {
 
-        db = new ComicDataService(context, true);
+        db = new ComicService(context);
         _context = context;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         names    = db.getAllComicNames();
-        comicsCount = db.count();
+        comicsCount = db.getCount();
         db.close();
     }
 

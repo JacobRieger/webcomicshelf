@@ -10,6 +10,8 @@ import android.view.MenuItem;
 
 import com.example.app.R;
 
+import services.network.async.ComicsUpdater;
+
 
 /**
  * An activity representing a list of Comics. This activity
@@ -106,6 +108,8 @@ public class ComicListActivity extends FragmentActivity
                 startActivity(addComicIntent);
                 break;
             case R.id.menuButtonUpdate:
+                ComicsUpdater updater = new ComicsUpdater(this);
+                updater.execute();
                 break;
             case R.id.menuButtonViewAllComics:
                 Intent comicGalleryIntent = new Intent(this, ComicGalleryActivity.class);

@@ -102,7 +102,7 @@ public class JsoupComicScraper {
             String alt = imageElement.attr("title");
             System.out.println(alt);
 
-            return new HtmlImage(img, alt, Bitmap.createBitmap(10, 10, Bitmap.Config.ALPHA_8));
+            return new HtmlImage(img, alt, Bitmap.createBitmap(1, 1, Bitmap.Config.ALPHA_8));
         }
 
         String imageSource = imageElement.attr("src");

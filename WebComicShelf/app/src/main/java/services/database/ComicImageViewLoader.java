@@ -16,24 +16,20 @@ import domain.Comic;
 public class ComicImageViewLoader extends AsyncTask<String, Void, Bitmap> {
 
     private final WeakReference<ImageView> imageViewReference;
-    private ComicDataService dataService;
     private boolean scaled = false;
+    private Context context;
 
-    public ComicImageViewLoader(ImageView imageView, Context context) {
+    public ComicImageViewLoader(ImageView imageView, Context _context) {
         // Use a WeakReference to ensure the ImageView can be garbage collected
         imageViewReference = new WeakReference<ImageView>(imageView);
-
-
-        dataService = new ComicDataService(context, true);
+        context = _context;
     }
 
-    public ComicImageViewLoader(ImageView imageView, Context context, boolean scale) {
+    public ComicImageViewLoader(ImageView imageView, Context _context, boolean scale) {
         // Use a WeakReference to ensure the ImageView can be garbage collected
         imageViewReference = new WeakReference<ImageView>(imageView);
-
         scaled = scale;
-
-        dataService = new ComicDataService(context, true);
+        context = _context;
     }
 
 
@@ -41,11 +37,12 @@ public class ComicImageViewLoader extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(String... params) {
 
+        ComicService dataService = new ComicService(context);
         if(scaled)
         {
             Comic current = dataService.getComic(params[0]);
             Bitmap image = current.get_htmlImage().getBitmap();
-            byte[] bytes = ComicDataService.getBytesFromBitmap(image);
+            byte[] bytes = ComicService.getBytesFromBitmap(image);
 
             return Bitmap.createBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length),
                     0, 0, 75, 75);
@@ -53,6 +50,8 @@ public class ComicImageViewLoader extends AsyncTask<String, Void, Bitmap> {
 
         Comic comic = dataService.getComic(params[0]);
         Bitmap bitmap = comic.get_htmlImage().getBitmap();
+
+        dataService.close();
 
         return bitmap;
     }

@@ -1,11 +1,6 @@
 package activities;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -27,9 +22,7 @@ import android.widget.Toast;
 import com.example.app.R;
 
 import domain.Bookmark;
-import domain.Comic;
 import domain.HtmlImage;
-import services.database.ComicDataService;
 import services.network.async.ImageDownloadAsyncTask;
 import services.utilities.AddComicOnEditorActionListener;
 import services.utilities.AddComicOnTouchListener;
