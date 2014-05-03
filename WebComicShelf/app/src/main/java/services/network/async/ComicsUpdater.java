@@ -89,11 +89,13 @@ public class ComicsUpdater extends AsyncTask<Void, Void, Void> {
         try
         {
             progressDialog.dismiss();
+            comicService.close();
         }
         catch(Exception e)
         {
             Toast alert = Toast.makeText(context, "Comic Updates Complete", Toast.LENGTH_LONG);
             alert.show();
+            comicService.close();
         }
     }
 
