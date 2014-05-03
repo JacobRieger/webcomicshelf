@@ -3,14 +3,9 @@ package services.network.async;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.effect.EffectUpdateListener;
 import android.os.AsyncTask;
-import android.text.Html;
 import android.widget.Toast;
 
-import org.jsoup.Jsoup;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import domain.Comic;
