@@ -7,10 +7,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import services.database.ComicDataService;
+import services.database.ComicService;
 
 /**
  * A list fragment representing a list of Comics. This fragment
@@ -73,14 +72,14 @@ public class ComicListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ComicDataService comicDataService = new ComicDataService(getActivity(), true);
+        ComicService comicService = new ComicService(getActivity(), true);
 
-        List<String> comicNames = comicDataService.getAllComicNames();
+        List<String> comicNames = comicService.getAllComicNames();
 
         ArrayAdapter<String> stringAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, comicNames);
 
-        comicDataService.close();
+        comicService.close();
 
         setListAdapter(stringAdapter);
     }

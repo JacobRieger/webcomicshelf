@@ -5,14 +5,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.app.R;
 
 import domain.Comic;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
-import services.database.ComicDataService;
+import services.database.ComicService;
 
 /**
  * A fragment representing a single Comic detail screen.
@@ -44,7 +43,7 @@ public class ComicDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(COMIC_ID)) {
-            ComicDataService dataService = new ComicDataService(getActivity(), true);
+            ComicService dataService = new ComicService(getActivity(), true);
 
             long comicId = Long.parseLong(getArguments().getString(COMIC_ID));
 

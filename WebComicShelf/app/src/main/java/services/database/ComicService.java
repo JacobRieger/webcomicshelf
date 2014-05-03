@@ -19,7 +19,7 @@ import services.utilities.ComicBuilder;
 /**
  * Created by Jacob on 3/8/14.
  */
-public class ComicDataService extends SQLiteOpenHelper {
+public class ComicService extends SQLiteOpenHelper {
 
 
     // All Static variables
@@ -44,7 +44,7 @@ public class ComicDataService extends SQLiteOpenHelper {
 
     private SQLiteDatabase database;
 
-    public ComicDataService(Context context, boolean readOnly)
+    public ComicService(Context context, boolean readOnly)
     {
         super(context,DATABASE_NAME, null, DATABASE_VERSION);
         database = readOnly ? this.getReadableDatabase() : this.getWritableDatabase();
@@ -54,7 +54,6 @@ public class ComicDataService extends SQLiteOpenHelper {
     {
         database.close();
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -107,6 +106,14 @@ public class ComicDataService extends SQLiteOpenHelper {
         database.close();
 
         return databaseComic;
+    }
+
+    public Comic updateComic(Comic comic)
+    {
+        ContentValues comicValues = new ContentValues();
+
+        int value = db.update(TABLE_WEBCOMICS, comicValues, KEY_ID + " = ?",
+                new String[] { String.valueOf(comic.getId()) });
     }
 
     public List<Comic> getAllComics()

@@ -3,7 +3,6 @@
 package activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,11 +21,10 @@ import android.widget.ImageView;
 
 import com.example.app.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import domain.Comic;
-import services.database.ComicDataService;
+import services.database.ComicService;
 import services.database.ComicImageViewLoader;
 import services.utilities.BookmarkList;
 
@@ -53,7 +50,7 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_gallery);
         //Our database on the  phone
-        ComicDataService database = new ComicDataService(this, true);
+        ComicService database = new ComicService(this, true);
         ComicNames = database.getAllComicNames();
 
         // Create the adapter that will return a fragment
@@ -161,7 +158,7 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
 
     @Override
     public boolean onLongClick(View view) {
-        ComicDataService database = new ComicDataService(this, true);
+        ComicService database = new ComicService(this, true);
 
         if (view.getClass() == ImageView.class) {
             //Our current comic

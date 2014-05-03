@@ -16,7 +16,7 @@ import domain.Comic;
 public class ComicImageViewLoader extends AsyncTask<String, Void, Bitmap> {
 
     private final WeakReference<ImageView> imageViewReference;
-    private ComicDataService dataService;
+    private ComicService dataService;
     private boolean scaled = false;
 
     public ComicImageViewLoader(ImageView imageView, Context context) {
@@ -24,7 +24,7 @@ public class ComicImageViewLoader extends AsyncTask<String, Void, Bitmap> {
         imageViewReference = new WeakReference<ImageView>(imageView);
 
 
-        dataService = new ComicDataService(context, true);
+        dataService = new ComicService(context, true);
     }
 
     public ComicImageViewLoader(ImageView imageView, Context context, boolean scale) {
@@ -33,7 +33,7 @@ public class ComicImageViewLoader extends AsyncTask<String, Void, Bitmap> {
 
         scaled = scale;
 
-        dataService = new ComicDataService(context, true);
+        dataService = new ComicService(context, true);
     }
 
 
@@ -45,7 +45,7 @@ public class ComicImageViewLoader extends AsyncTask<String, Void, Bitmap> {
         {
             Comic current = dataService.getComic(params[0]);
             Bitmap image = current.get_htmlImage().getBitmap();
-            byte[] bytes = ComicDataService.getBytesFromBitmap(image);
+            byte[] bytes = ComicService.getBytesFromBitmap(image);
 
             return Bitmap.createBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length),
                     0, 0, 75, 75);
