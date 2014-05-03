@@ -47,7 +47,7 @@ public class ComicsUpdater extends AsyncTask<Void, Void, Void> {
         ComicService comicService = new ComicService(context, false);
 
         List<String> comicNames = comicService.getAllComicNames();
-        for(int i = 0; i < comicService.getCount(); i++)
+        for(int i = 0; i < comicNames.size(); i++)
         {
             Comic comicToUpdate = comicService.getComic(comicNames.get(i));
             //Todo: Update only comics that need it
@@ -105,7 +105,5 @@ public class ComicsUpdater extends AsyncTask<Void, Void, Void> {
         }
         return false;
     }
-
-
 }
 
