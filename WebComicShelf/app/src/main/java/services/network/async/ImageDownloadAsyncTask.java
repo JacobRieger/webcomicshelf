@@ -116,7 +116,7 @@ public class ImageDownloadAsyncTask extends AsyncTask<String, Void, Bitmap> {
         comicBuilder.HtmlImage(htmlImage);
         Comic comic = comicBuilder.BuildComic();
 
-        ComicService dataService = new ComicService(context, false);
+        ComicService dataService = new ComicService(context);
         dataService.createComic(comic);
 
         pdialog.dismiss();

@@ -42,17 +42,9 @@ public class ComicService extends SQLiteOpenHelper {
     private static final String KEY_SEEN_BY_USER    = "seenByUser";
     private static final String KEY_LAST_UPDATED_AT = "lastUpdatedAt";
 
-    private SQLiteDatabase database;
-
-    public ComicService(Context context, boolean readOnly)
+    public ComicService(Context context)
     {
-        super(context,DATABASE_NAME, null, DATABASE_VERSION);
-        database = readOnly ? this.getReadableDatabase() : this.getWritableDatabase();
-    }
-
-    public void close()
-    {
-        database.close();
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -110,6 +102,7 @@ public class ComicService extends SQLiteOpenHelper {
 
     public long updateComic(Comic comic)
     {
+        SQLiteDatabase database = this.getWritableDatabase();
         ContentValues comicValues = new ContentValues();
         HtmlImage htmlImage = comic.get_htmlImage();
         byte[] bitmapBytes = getBytesFromBitmap(htmlImage.getBitmap());
@@ -125,6 +118,8 @@ public class ComicService extends SQLiteOpenHelper {
 
         int value = database.update(TABLE_WEBCOMICS, comicValues, KEY_ID + " = ?",
                 new String[] { String.valueOf(comic.get_id()) });
+
+        database.close();
 
         return value;
     }
@@ -148,10 +143,15 @@ public class ComicService extends SQLiteOpenHelper {
 
     public int getCount()
     {
+        SQLiteDatabase database = this.getReadableDatabase();
+
         Cursor cursor = database.rawQuery("select count(*) " + TABLE_WEBCOMICS, null);
         cursor.moveToFirst();
 
-        return cursor.getInt(0);
+        int result = cursor.getInt(0);
+        database.close();
+
+        return result;
     }
 
     public List<String> getAllComicNames()
@@ -174,38 +174,23 @@ public class ComicService extends SQLiteOpenHelper {
             comicNames.add(name);
         }
 
-        cursor.close();
+        database.close();
 
         return comicNames;
     }
 
-    public int count()
-    {
-        SQLiteDatabase database = this.getReadableDatabase();
-
-        if(database == null)
-        {
-            return 0;
-        }
-
-        Cursor cursor = database.query(TABLE_WEBCOMICS, new String[]
-                {KEY_ID}, "", null, null, null, null
-                );
-
-        database.close();
-        return cursor.getCount();
-    }
-
     public Comic getComic(long id)
     {
-        SQLiteDatabase database = this.getWritableDatabase();
+        SQLiteDatabase database = this.getReadableDatabase();
 
         if(database == null)
         {
             return null;
         }
 
-        Cursor cursor = queryFor(KEY_ID, Long.toString(id));
+        Cursor cursor = database.query(TABLE_WEBCOMICS,
+                null, KEY_ID + "=?",
+                new String[] { Long.toString(id) }, null, null, null, null);
 
         if(cursor.getCount() == 0 || cursor == null)
         {
@@ -242,7 +227,9 @@ public class ComicService extends SQLiteOpenHelper {
             return null;
         }
 
-        Cursor cursor = queryFor(KEY_NAME, name);
+        Cursor cursor = database.query(TABLE_WEBCOMICS,
+                null, KEY_NAME + "=?",
+                new String[] { name }, null, null, null, null);
 
         if(cursor.getCount() == 0 || cursor == null)
         {
@@ -283,22 +270,6 @@ public class ComicService extends SQLiteOpenHelper {
         comicValues.put(KEY_LAST_UPDATED_AT, comic.get_lastUpdatedAt());
 
         return comicValues;
-    }
-
-    private Cursor queryFor(String columnName, String value)
-    {
-        SQLiteDatabase database = this.getWritableDatabase();
-
-        if(database == null)
-        {
-            return null;
-        }
-
-        Cursor cursor = database.query(TABLE_WEBCOMICS,
-                null, columnName + "=?",
-                new String[] { value }, null, null, null, null);
-
-        return cursor;
     }
 
     private Comic cursorToComic(Cursor cursor)

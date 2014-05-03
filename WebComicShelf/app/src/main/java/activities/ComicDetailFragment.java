@@ -43,7 +43,7 @@ public class ComicDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(COMIC_ID)) {
-            ComicService dataService = new ComicService(getActivity(), true);
+            ComicService dataService = new ComicService(getActivity());
 
             long comicId = Long.parseLong(getArguments().getString(COMIC_ID));
 

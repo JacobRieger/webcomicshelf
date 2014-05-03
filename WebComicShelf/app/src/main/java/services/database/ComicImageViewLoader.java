@@ -37,7 +37,7 @@ public class ComicImageViewLoader extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(String... params) {
 
-        ComicService dataService = new ComicService(context, false);
+        ComicService dataService = new ComicService(context);
         if(scaled)
         {
             Comic current = dataService.getComic(params[0]);

@@ -31,7 +31,7 @@ public class ComicsUpdater extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPreExecute()
     {
-        ComicService comicService = new ComicService(context, false);
+        ComicService comicService = new ComicService(context);
         progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -44,7 +44,7 @@ public class ComicsUpdater extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
 
-        ComicService comicService = new ComicService(context, false);
+        ComicService comicService = new ComicService(context);
 
         List<String> comicNames = comicService.getAllComicNames();
         for(int i = 0; i < comicNames.size(); i++)

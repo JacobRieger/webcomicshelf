@@ -23,11 +23,11 @@ public class ComicListAdapter extends BaseAdapter {
 
     public ComicListAdapter(Context context, Activity activity) {
 
-        db = new ComicService(context, true);
+        db = new ComicService(context);
         _context = context;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         names    = db.getAllComicNames();
-        comicsCount = db.count();
+        comicsCount = db.getCount();
         db.close();
     }
 

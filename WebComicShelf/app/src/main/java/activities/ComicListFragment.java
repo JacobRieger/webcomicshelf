@@ -72,7 +72,7 @@ public class ComicListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ComicService comicService = new ComicService(getActivity(), true);
+        ComicService comicService = new ComicService(getActivity());
 
         List<String> comicNames = comicService.getAllComicNames();
 

@@ -50,7 +50,7 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_gallery);
         //Our database on the  phone
-        ComicService database = new ComicService(this, true);
+        ComicService database = new ComicService(this);
         ComicNames = database.getAllComicNames();
 
         // Create the adapter that will return a fragment
@@ -158,7 +158,7 @@ public class ComicGalleryActivity extends FragmentActivity implements View.OnLon
 
     @Override
     public boolean onLongClick(View view) {
-        ComicService database = new ComicService(this, true);
+        ComicService database = new ComicService(this);
 
         if (view.getClass() == ImageView.class) {
             //Our current comic
