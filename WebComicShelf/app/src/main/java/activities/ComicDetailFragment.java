@@ -5,12 +5,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.app.R;
 
 import domain.Comic;
-import services.database.ComicDataService;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
+import services.database.ComicService;
 
 /**
  * A fragment representing a single Comic detail screen.
@@ -42,11 +43,12 @@ public class ComicDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(COMIC_ID)) {
-            ComicDataService dataService = new ComicDataService(getActivity());
+            ComicService dataService = new ComicService(getActivity());
 
             long comicId = Long.parseLong(getArguments().getString(COMIC_ID));
 
-            selectedComic = dataService.getComic(comicId);
+            selectedComic = dataService.getComic(comicId+1);
+            dataService.close();
         }
     }
 
@@ -55,11 +57,17 @@ public class ComicDetailFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_comic_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
         if (selectedComic != null) {
-            ((TextView) rootView.findViewById(R.id.comic_detail)).setText(selectedComic.get_name());
+            ImageViewTouch imageView = (ImageViewTouch) rootView.findViewById(R.id.ImageView01);
+            imageView.setImageBitmap(selectedComic.get_htmlImage().getBitmap());
+            imageView.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         }
 
         return rootView;
+    }
+
+    public Comic getSelectedComic()
+    {
+        return selectedComic;
     }
 }

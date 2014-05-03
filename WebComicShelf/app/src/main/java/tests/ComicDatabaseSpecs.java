@@ -2,7 +2,7 @@ package tests;
 
 import android.content.Context;
 
-import services.database.ComicDataService;
+import services.database.ComicService;
 
 /**
  * Created by Jacob on 3/15/14.
@@ -11,6 +11,7 @@ public class ComicDatabaseSpecs {
 
     public void crudTests(Context context)
     {
-        ComicDataService service = new ComicDataService(context);
+        ComicService service = new ComicService(context);
+        service.close();
     }
 }

@@ -3,8 +3,14 @@ package activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.app.R;
+
+import services.network.async.ComicsUpdater;
 
 
 /**
@@ -37,8 +43,7 @@ public class ComicListActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_list);
 
-        if (findViewById(R.id.comic_detail_container) != null)
-        {
+        if (findViewById(R.id.comic_detail_container) != null){
             // The detail container view will be present only in the
             // large-screen layouts (res/values-large and
             // res/values-sw600dp). If this view is present, then the
@@ -61,8 +66,7 @@ public class ComicListActivity extends FragmentActivity
      */
     @Override
     public void onItemSelected(String id) {
-        if (mTwoPane)
-        {
+        if (mTwoPane){
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
@@ -74,13 +78,45 @@ public class ComicListActivity extends FragmentActivity
                     .replace(R.id.comic_detail_container, fragment)
                     .commit();
         }
-        else
-        {
+        else{
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, ComicDetailActivity.class);
             detailIntent.putExtra(ComicDetailFragment.COMIC_ID, id);
             startActivity(detailIntent);
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        menu.clear();
+
+        inflater.inflate(R.menu.comic_list, menu);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem)
+    {
+        switch(menuItem.getItemId())
+        {
+            case R.id.menuButtonAddComic:
+                Intent addComicIntent = new Intent(this, AddComicActivity.class);
+                startActivity(addComicIntent);
+                break;
+            case R.id.menuButtonUpdate:
+                ComicsUpdater updater = new ComicsUpdater(this);
+                updater.execute();
+                break;
+            case R.id.menuButtonViewAllComics:
+                Intent comicGalleryIntent = new Intent(this, ComicGalleryActivity.class);
+                startActivity(comicGalleryIntent);
+                break;
+        }
+
+        return false;
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/menuButtonUpdate"
+        android:title="@string/UpdateAll"
+        android:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_menu_update"/>
+
+    <item
+        android:id="@+id/menuButtonAddComic"
+        android:title="@string/AddComicButton"
+        android:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_menu_addcomic"/>
+
+    <item
+        android:id="@+id/menuButtonViewAllComics"
+        android:title="@string/Viewcomics"
+        android:showAsAction="ifRoom|withText"/>
+
+    <item android:id="@+id/menuButtonSettings"
+        android:title="@string/menu_settings"
+        android:showAsAction="ifRoom|withText"/>
+
+
+</menu>
