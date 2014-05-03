@@ -32,17 +32,18 @@ public class StringComparer {
 
     public static HtmlImage calculateMostSimilarString(List<HtmlImage> htmlImageList, String comparisonString)
     {
-        int maxScore = 0;
+        int maxScore = 999;
         HtmlImage mostSimilar = htmlImageList.get(0);
 
         for(HtmlImage htmlImage : htmlImageList)
         {
             int score = computeLevenshteinDistance(htmlImage.getSource(), comparisonString);
-            if(score > maxScore)
+            if(score < maxScore)
             {
                 mostSimilar = htmlImage;
+                maxScore = score;
             }
-            if(score == maxScore)
+            else if(score == maxScore)
             {
                 int previousMostSimilar = calucateFrontSimilarity(comparisonString, mostSimilar.getSource());
                 int newPossibleMostSimilar = calucateFrontSimilarity(comparisonString, htmlImage.getSource());
