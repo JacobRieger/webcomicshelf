@@ -145,7 +145,7 @@ public class ComicService extends SQLiteOpenHelper {
     {
         SQLiteDatabase database = this.getReadableDatabase();
 
-        Cursor cursor = database.rawQuery("select count(*) " + TABLE_WEBCOMICS, null);
+        Cursor cursor = database.rawQuery("select count(*) from " + TABLE_WEBCOMICS, null);
         cursor.moveToFirst();
 
         int result = cursor.getInt(0);
