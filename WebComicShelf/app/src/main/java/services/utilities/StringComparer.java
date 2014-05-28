@@ -45,8 +45,8 @@ public class StringComparer {
             }
             else if(score == maxScore)
             {
-                int previousMostSimilar = calucateFrontSimilarity(comparisonString, mostSimilar.getSource());
-                int newPossibleMostSimilar = calucateFrontSimilarity(comparisonString, htmlImage.getSource());
+                int previousMostSimilar = calculateFrontSimilarity(comparisonString, mostSimilar.getSource());
+                int newPossibleMostSimilar = calculateFrontSimilarity(comparisonString, htmlImage.getSource());
                 maxScore = previousMostSimilar > newPossibleMostSimilar ? previousMostSimilar : newPossibleMostSimilar;
                 mostSimilar = previousMostSimilar > newPossibleMostSimilar ? mostSimilar : htmlImage;
             }
@@ -54,7 +54,7 @@ public class StringComparer {
         return mostSimilar;
     }
 
-    public static int calucateFrontSimilarity(String string1, String string2)
+    public static int calculateFrontSimilarity(String string1, String string2)
     {
         int similarityCount = 0;
 
